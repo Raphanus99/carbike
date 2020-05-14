@@ -1,0 +1,214 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<script src="/js/jquery.js"></script>
+		<style type="text/css">
+			*{
+				padding: 0px;
+				margin: 0px;
+			}
+			header{
+				width: 90%;
+				margin: auto;
+				margin-top: 15px;
+			}
+			main{
+				width: 90%;
+				margin: auto;
+			}
+			h2{
+				width: 90%;
+				font-family: "宋体";
+				line-height: 50px;
+				margin-left: 20px;
+				
+			}
+			.clx:after{
+				content: "";
+				display: block;
+				clear: both;
+			}
+			
+			header nav{
+				width: 100%;
+				border-bottom: 2px solid red;
+			}
+			.header_ul{
+				width: 100%;
+			}
+			
+			
+
+			.header_ul li{
+				list-style: none;
+				float: left;
+				border: 1px solid red;
+				box-shadow: 0px 0px 2px red;
+				line-height: 30px;
+				padding: 2px 5px;
+				font-size: 15px;
+				align-content: center;
+				text-decoration: none;
+				cursor:pointer;
+				cursor: hand;
+			}
+			/*.header_ul li{
+				font-size: 15px;
+				color: black;
+				align-content: center;
+				text-decoration: none;
+				cursor:pointer;
+				cursor: hand;
+				
+			}*/
+						
+			.li{
+				background: #FF0000;
+				color: white;
+			}
+			table td{
+				text-align: left;
+				line-height: 20px;
+				font-size: 12px;
+				border: #AAAAAA 1px ridge;
+				padding: 3px 2px;
+				width: 270px;
+			}
+			.td{
+				background: #FFE5D6;
+			}
+			table td>input{
+				padding: 4px;
+			}
+		</style>
+		
+		<script type="text/javascript">
+				window.onload=function(){
+
+				var arr=["http://localhost:8077/guproposalmain/seBase?riskCode=${riskCode!''}&<#if guProPosalMains??>proPosalNo=${guProPosalMains.policyNo!''}</#if>",
+                    "http://localhost:8077/itemmotor/seItemmotor?riskCode=${riskCode!''}&<#if guProPosalMains??>proPosalNo=${guProPosalMains.policyNo!''}</#if>",
+                        "http://localhost:8077/itemkind/seItemkinds?riskCode=${riskCode!''}&<#if guProPosalMains??>proPosalNo=${guProPosalMains.policyNo!''}</#if>",
+                    "https://www.baidu.com"];
+				var flag=false;
+				var oUll1=document.getElementById("header_ul");
+				var oAll=oUll1.getElementsByTagName("li");
+				for(var i=0;i<oAll.length;i++){
+					oAll[i].index=i;
+					oAll[i].onclick=function(){
+						for(var j=0;j<oAll.length;j++){
+							oAll[j].className="";
+						}
+						this.className="li";
+						window.location.href=arr[this.index];
+					}
+					
+				}
+
+				}
+                $(function() {
+                    $("#businessChannel").blur(function () {
+                        //发送ajax
+                        $.ajax({
+                            //请求哪个地址
+                            url: "/canal/businessChannel",
+                            //请求方式
+                            type: "post",
+                            //预计服务器返回json对象
+                            dataType: "json",
+                            //发送数据
+                            data: {"businessChannel": $("#businessChannel").val()},
+                            //响应成功以后回调函数，参数data用来接收后台传送的数据
+                            success: function (data) {
+                                if (data.flag) {
+                                    $("#zhixiao").html(data.businessSource);
+                                    $("#businessSource").val(data.businessSource);
+                                }else{
+                                    $("#zhixiao").html(data.businessSource);
+                                    alert("没有改渠道号");
+                                }
+                            },
+                            //响应失败后回调函数，
+                            error: function () {
+                                alert("失败了");
+                            }
+                        })
+                    })
+                })
+			</script>
+	</head>
+	<body>
+		<header>
+			<h2>车险承保子系统</h2>
+			<nav>
+				<ul class="header_ul clx" id="header_ul">
+					<li class="li">保单信息</li>
+					<li>标的信息</li>
+					<li>险种信息</li>
+					<li>保单费用信息</li>
+				</ul>
+			</nav>
+			
+		</header>
+		<main>
+			<form action="base" method="post">
+                <!--获取险种编号-->
+                <input id="riskCode" type="hidden" name="riskCode" value="${riskCode!''}" />
+                <input id="policyNo" type="hidden" name="policyNo" value="${policyNo!''}"/>
+				<table  cellpadding="0" cellspacing="0">
+					<tr>
+						<td colspan="4" class="td" style="font-weight: 600;">销售信息</td>
+					</tr>
+					<tr>
+                        <!--利用ajax把渠道名称弄过来-->
+						<td class="td">渠道号</td>
+						<td><input type="text" value="<#if guProPosalMains??>${guProPosalMains.businessChannel!''}</#if>" name="businessChannel" id="businessChannel"/><span  id="zhixiao"></span></td>
+						<td class="td" colspan="2"><input type="text" name="businessSource" value="<#if guProPosalMains??>${guProPosalMains.businessSource!''}</#if>" id="businessSource"/> </td>
+					</tr>
+					<tr>
+						<td colspan="4" class="td" style="font-weight: 600;">保单信息</td>
+					</tr>
+					<tr>
+						<td class="td">投保单号码</td>
+						<td><input type="text" value="<#if guProPosalMains??>${guProPosalMains.policyNo!''}</#if>" name="policyNo"/></td>
+						<td class="td">入机日期</td>
+						<td><input type="date" value="<#if guProPosalMains?? && guProPosalMains.issueDate??>${guProPosalMains.issueDate?string('yyyy-MM-dd')}</#if>" name="issueDate"/></td>
+					</tr>
+					
+					<tr>
+						<td colspan="4" class="td" style="font-weight: 600;">投保单人信息</td>
+					</tr>
+					<tr>
+						<td class="td">投保人姓名</td>
+						<td><input type="text" value="<#if RelatedParty??>${RelatedParty.insuredName!''}</#if>" name="insuredName"/></td>
+						<td class="td">投保人代码</td>
+						<td><input type="text" value="<#if RelatedParty??>${RelatedParty.insuredCode!''}</#if>" name="insuredCode"/></td>
+					</tr>
+					<tr>
+						<td class="td">投保人性别</td>
+                        <td><select name="sex">
+                            <option value="男">男</option>
+                            <option value="女">女</option>
+                        </select>
+                        </td>
+						<td class="td">投保人地址</td>
+						<td><input type="text" value="<#if RelatedParty??>${RelatedParty.insuredAddress!''}</#if>" name="insuredAddress"/></td>
+					</tr>
+					<tr>
+						<td class="td">投保人证件号</td>
+						<td><input type="text" value="<#if RelatedParty??>${RelatedParty.identifyNumber!''}</#if>" name="identifyNumber"/></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td colspan="4" align="center" style="text-align: center;border: none;">
+							<input type="submit" value="保存" style="cursor: hand; cursor: pointer; background: #FFE5D6; width: 100px; outline: none; border: #FF0000 1px solid;" /></td>
+					</tr>
+				</table>
+				
+			</form>
+		</main>
+	</body>
+</html>

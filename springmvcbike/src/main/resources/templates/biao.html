@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<script src="/js/jquery.js"></script>
+		<style type="text/css">
+			*{
+				padding: 0px;
+				margin: 0px;
+			}
+			header{
+				width: 90%;
+				margin: auto;
+				margin-top: 15px;
+			}
+			main{
+				width: 90%;
+				margin: auto;
+			}
+			h2{
+				width: 90%;
+				font-family: "宋体";
+				line-height: 50px;
+				margin-left: 20px;
+				
+			}
+			.clx:after{
+				content: "";
+				display: block;
+				clear: both;
+			}
+			
+			header nav{
+				width: 100%;
+				border-bottom: 2px solid red;
+			}
+			.header_ul{
+				width: 100%;
+			}
+			
+			
+
+			.header_ul li{
+				list-style: none;
+				float: left;
+				border: 1px solid red;
+				box-shadow: 0px 0px 2px red;
+				line-height: 30px;
+				padding: 2px 5px;
+				font-size: 15px;
+				align-content: center;
+				text-decoration: none;
+				cursor:pointer;
+				cursor: hand;
+			}
+			/*.header_ul li{
+				font-size: 15px;
+				color: black;
+				align-content: center;
+				text-decoration: none;
+				cursor:pointer;
+				cursor: hand;
+				
+			}*/
+						
+			.li{
+				background: #FF0000;
+				color: white;
+			}
+			table td{
+				text-align: left;
+				line-height: 20px;
+				font-size: 12px;
+				border: #CCCCCC 1px solid;
+				padding: 3px 2px;
+				width: 270px;
+			}
+			.td{
+				background: #FFE5D6;
+			}
+			table td>input{
+				padding: 3px;
+			}
+		</style>
+		
+		<script type="text/javascript">
+				window.onload=function(){ 
+					
+				var arr=["http://localhost:8077/guproposalmain/seBase?riskCode=${riskCode!''}&proPosalNo=${proPosalNo!''}",
+                    "http://localhost:8077/itemmotor/seItemmotor?riskCode=${riskCode!''}&proPosalNo=${proPosalNo!''}",
+                        "http://localhost:8077/itemkind/seItemkinds?riskCode=${riskCode!''}&proPosalNo=${proPosalNo!''}",
+                    "https://www.baidu.com"];
+				var flag=false;
+				var oUll1=document.getElementById("header_ul");
+				var oAll=oUll1.getElementsByTagName("li");
+				for(var i=0;i<oAll.length;i++){
+					oAll[i].index=i;
+					oAll[i].onclick=function(){
+						for(var j=0;j<oAll.length;j++){
+							oAll[j].className="";
+						}
+						this.className="li";
+						window.location.href=arr[this.index];
+					}
+					
+				}
+				}
+			</script>
+	</head>
+	<body>
+		<header>
+			<h2>车险承保子系统</h2>
+			<nav>
+				<ul class="header_ul clx" id="header_ul">
+					<li>保单信息</li>
+					<li class="li">标的信息</li>
+					<li>险种信息</li>
+					<li>保单费用信息</li>
+				</ul>
+			</nav>
+			
+		</header>
+		<main>
+			<form action="/itemmotor/carManager" method="post">
+                <!--保单号-->
+                <input type="hidden" name="proPosalNo" value="${proPosalNo!''}" />
+                <!--险种代码-->
+                <input type="hidden" name="riskCode" value="${riskCode!''}" />
+				<table  cellpadding="0" cellspacing="0">
+					<tr>
+						<td colspan="4" class="td" style="font-weight: 600;  color: red;">标的信息</td>
+					</tr>
+
+					<tr>
+						<td class="td">行驶证车主</td>
+						<td><input type="text" value="<#if relatedParty??>${relatedParty.insuredName!''}</#if>" name="insuredName"/></td>
+						<td class="td">车主证件号码</td>
+						<td><input type="text" value="<#if relatedParty??>${relatedParty.identifyNumber!''}</#if>" name="insuredCode"/></td>
+					</tr>
+					<tr>
+						<td class="td">车主性别</td>
+						<td><input type="text" value="<#if relatedParty??>${relatedParty.sex!''}</#if>" name="sex"/></td>
+						<td class="td" colspan="2"></td>
+					</tr>
+
+					<tr>
+						<td class="td">号牌号码</td>
+						<td><input type="text" value="<#if itemmotor??>${itemmotor.licenNo!''}</#if>" name="licenNo"/></td>
+						<td class="td">车架号</td>
+						<td><input type="text" value="<#if itemmotor??>${itemmotor.vin!''}</#if>" name="vin"/></td>
+					</tr>
+					
+					<tr>
+						<td class="td">发动机号码</td>
+						<td><input type="text" value="<#if itemmotor??>${itemmotor.engine!''}</#if>" name="engine"/></td>
+						<td class="td">初登日期</td>
+						<td><input type="date" value="<#if itemmotor?? && itemmotor.errDate??>${itemmotor.errDate?string('yyyy-MM-dd')}</#if>" name="errDate"/></td>
+					</tr>
+					<tr>
+						<td colspan="4" align="center" style="text-align: center;border: none;">
+							<input type="submit" value="保存" style="cursor: hand; cursor: pointer; background: #FFE5D6; width: 100px; outline: none; border: #FF0000 1px solid;" /></td>
+					</tr>
+				</table>
+				
+			</form>
+		</main>
+	</body>
+</html>
+
+	</body>
+</html>

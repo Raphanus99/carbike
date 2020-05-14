@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<script src="js/jquery-2.1.4/jquery.min.js"></script>
+		<style type="text/css">
+			*{
+				padding: 0px;
+				margin: 0px;
+			}
+			header{
+				width: 90%;
+				margin: auto;
+				margin-top: 15px;
+			}
+			main{
+				width: 90%;
+				margin: auto;
+			}
+			h2{
+				width: 90%;
+				font-family: "宋体";
+				line-height: 50px;
+				margin-left: 20px;
+				
+			}
+			.clx:after{
+				content: "";
+				display: block;
+				clear: both;
+			}
+			
+			header nav{
+				width: 100%;
+				border-bottom: 2px solid red;
+			}
+			.header_ul{
+				width: 100%;
+			}
+			
+			
+
+			.header_ul li{
+				list-style: none;
+				float: left;
+				border: 1px solid red;
+				box-shadow: 0px 0px 2px red;
+				line-height: 30px;
+				padding: 2px 5px;
+				font-size: 15px;
+				align-content: center;
+				text-decoration: none;
+				cursor:pointer;
+				cursor: hand;
+			}
+			/*.header_ul li{
+				font-size: 15px;
+				color: black;
+				align-content: center;
+				text-decoration: none;
+				cursor:pointer;
+				cursor: hand;
+				
+			}*/
+						
+			.li{
+				background: #FF0000;
+				color: white;
+			}
+			table td{
+				text-align: left;
+				line-height: 20px;
+				font-size: 12px;
+				border: #CCCCCC 1px solid;
+				padding: 3px 2px;
+				width: 270px;
+			}
+			.td{
+				background: #FFE5D6;
+			}
+			table td>input{
+				padding: 3px;
+			}
+			.baofei{
+				background: #FDF0BD;
+				border: solid 1px #C3C3C3;
+			}
+            .in{
+                outline: none;
+                border: none;
+
+            }
+		</style>
+		
+		<script type="text/javascript">
+				window.onload=function(){ 
+					
+				var arr=["http://localhost:8077/guproposalmain/seBase?riskCode=${riskCode!''}&proPosalNo=${proPosalNo!''}",
+                    "http://localhost:8077/itemmotor/seItemmotor?riskCode=${riskCode!''}&proPosalNo=${proPosalNo!''}",
+                    "http://localhost:8077/itemkind/seItemkinds?riskCode=${riskCode!''}&proPosalNo=${proPosalNo!''}"];
+				var flag=false;
+				var oUll1=document.getElementById("header_ul");
+				var oAll=oUll1.getElementsByTagName("li");
+				for(var i=0;i<oAll.length;i++){
+					oAll[i].index=i;
+					oAll[i].onclick=function(){
+						for(var j=0;j<oAll.length;j++){
+							oAll[j].className="";
+						}
+						this.className="li";
+						window.location.href=arr[this.index];
+					}
+					
+				}
+				}
+			</script>
+	</head>
+	<body>
+		<header>
+			<h2>车险承保子系统</h2>
+			<nav>
+				<ul class="header_ul clx" id="header_ul">
+					<li>保单信息</li>
+					<li>标的信息</li>
+					<li  class="li">险种信息</li>
+					<li>保单费用信息</li>
+				</ul>
+			</nav>
+			
+		</header>
+		<main>
+			<table class="baofei" cellpadding="0" cellspacing="0">
+				<tr>
+					<td>险种</td>
+					<td>保单号码</td>
+					<td>起保日期</td>
+					<td>终保日期</td>
+					<td>操作员</td>
+					<td>保费</td>
+				</tr>
+                <#if guProPosalRisk??>
+				<tr>
+					<td height="15">${guProPosalRisk.riskCode!'-'}${guProPosalRisk.riskCname!''}</td>
+					<td>${guProPosalRisk.proPosalNo!''}</td>
+					<td><#if guProPosalRisk.startDate??>${guProPosalRisk.startDate?string("yyyy-MM-dd")}</#if></td>
+					<td><#if guProPosalRisk.endDate??>${guProPosalRisk.endDate?string("yyyy-MM-dd")}</#if></td>
+					<td>CYN</td>
+					<td>${guProPosalRisk.sumGrossPremium!''}</td>
+				</tr>
+            </#if>
+			</table>
+			<form action="/itemkind/riskItemmotor" method="post">
+                <!--保单号-->
+                <input type="hidden" name="proPosalNo" value="${proPosalNo!''}" />
+                <!--险种代码-->
+                <input type="hidden" name="riskCode" value="${riskCode!''}" />
+				<table  cellpadding="0" cellspacing="0">
+					<tr>
+						<td colspan="4" class="td" style="font-weight: 600;  color: red;">被投保人信息</td>
+					</tr>
+
+					<tr>
+						<td class="td">被保险人代码</td>
+						<td><input type="text" value="<#if relatedParty??>${relatedParty.insuredCode!''}</#if>" name="insuredCode"/></td>
+						<td class="td">被保险人名称</td>
+						<td><input type="text" value="<#if relatedParty??>${relatedParty.insuredName!''}</#if>" name="insuredName"/></td>
+					</tr>
+					<tr>
+						<td class="td">证件类型</td>
+						<td>
+							<select name="">
+								<option value="" selected="selected">01-居民身份证</option>
+							</select>
+						</td>
+						<td class="td">证件号码</td>
+						<td><input type="text" name="identifyNumber" value="<#if relatedParty??>${relatedParty.identifyNumber!''}</#if>"></td>
+					</tr>
+					
+					<tr>
+						<td class="td">性别</td>
+						<td><input type="text" value="<#if relatedParty??>${relatedParty.sex!''}</#if>" name="sex"/></td>
+						<td class="td">居住地址</td>
+						<td><input type="text" value="<#if relatedParty??>${relatedParty.insuredAddress!''}</#if>" name="insuredAddress"/></td>
+					</tr>
+
+                    <!--============================================================================-->
+                    <tr>
+                        <td colspan="4" class="td" style="font-weight: 600;  color: red;">险别信息</td>
+                    </tr>
+                    <tr>
+
+                        <table width="100%" cellpadding="0" cellspacing="0" align="center" style="margin-bottom: 20px;">
+                            <tr style="background: #FFF2D0; font-weight: 600; text-align: center; line-height: 20px;">
+                                <td width="200"  style="text-align: center; width: 250px;">险别代码/名单</td>
+                                <td style="text-align: center; width: 200px;">不计免赔特约条款</td>
+                                <td style="text-align: center; width: 70px;">保险金额/赔偿限额</td>
+                                <td style="text-align: center; width: 70px;">费率</td>
+                                <td  style="text-align: center; width: 70px;">标准保费</td>
+                                <td style="text-align: center; width: 70px;">短期费率</td>
+                                <td style="text-align: center; width: 70px;">折扣率</td>
+                                <td style="text-align: center; width: 70px;">实交保费</td>
+                                <td style="text-align: center; width: 70px;">分险别赔付成本</td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="list[0].itemNo" class="in" value="01" /> &nbsp;&nbsp;&nbsp;&nbsp;<span><input type="text" name="list[0].kindName" class="in" value="车辆损失保险" /></span></td>
+                                <td><input type="checkbox" name="list[0].itemcode"  value="01" /></td>
+                                <td>740000</td>
+                                <td>0.00000</td>
+                                <td>1526.23</td>
+                                <td>100.00</td>
+                                <td>63.7500</td>
+                                <td>973.04</td>
+                                <td>582.16</td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="list[1].itemNo" class="in" value="02" /> &nbsp;&nbsp;&nbsp;&nbsp;<span><input type="text" name="list[1].itemNo" class="in" value="第三者责任保险" /></span></td>
+                                <td><input type="checkbox" name="list[1].itemcode"  value="02" /></td>
+                                <td>740000</td>
+                                <td>0.00000</td>
+                                <td>1526.23</td>
+                                <td>100.00</td>
+                                <td>63.7500</td>
+                                <td>973.04</td>
+                                <td>582.16</td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="list[2].itemNo" class="in" value="041" /> &nbsp;&nbsp;&nbsp;&nbsp;<span><input type="text" name="list[2].itemNo" class="in" value="车上人员责任保险" /></span></td>
+                                <td><input type="checkbox" name="list[2].itemcode"  value="041" /></td>
+                                <td>740000</td>
+                                <td>0.00000</td>
+                                <td>1526.23</td>
+                                <td>100.00</td>
+                                <td>63.7500</td>
+                                <td>973.04</td>
+                                <td>582.16</td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="list[3].itemNo" class="in" value="03" />&nbsp;&nbsp;&nbsp;&nbsp; <span><input type="text" name="list[3].itemNo" class="in" value="全车盗抢保险" /></span></td>
+                                <td><input type="checkbox" name="list[3].itemcode"  value="03" /></td>
+                                <td>740000</td>
+                                <td>0.00000</td>
+                                <td>1526.23</td>
+                                <td>100.00</td>
+                                <td>63.7500</td>
+                                <td>973.04</td>
+                                <td>582.16</td>
+                            </tr>
+                            <tr><td  colspan="9" class="td" style="font-weight: 600;  color: red;">附加险</td></tr>
+                            <tr  style="background: #FFF2D0; font-weight: 600; text-align: center; line-height: 20px;">
+                                <td style="text-align: center;">险别代码/名称</td>
+                                <td style="text-align: center;">不计免赔特约条款</td>
+                                <td style="text-align: center;">保险金额/赔偿限额</td>
+                                <td style="text-align: center;">费率</td>
+                                <td  style="text-align: center;">标准保费</td>
+                                <td style="text-align: center;">短期费率</td>
+                                <td style="text-align: center;">折扣率</td>
+                                <td style="text-align: center;">实交保费</td>
+                                <td style="text-align: center;">分险别赔付成本</td>
+                            </tr>
+                            <tr>
+                                <td>601&nbsp;&nbsp;&nbsp;&nbsp; <span>车辆损失保险</span></td>
+                                <td></td>
+                                <td>740000</td>
+                                <td>0.00000</td>
+                                <td>1526.23</td>
+                                <td>100.00</td>
+                                <td>63.7500</td>
+                                <td>973.04</td>
+                                <td>582.16</td>
+                            </tr>
+                            <tr>
+                                <td>601&nbsp;&nbsp;&nbsp;&nbsp; <span>不计面额(车辆损失险)</span></td>
+                                <td></td>
+                                <td>740000</td>
+                                <td>0.00000</td>
+                                <td>1526.23</td>
+                                <td>100.00</td>
+                                <td>63.7500</td>
+                                <td>973.04</td>
+                                <td>582.16</td>
+                            </tr>
+                            <tr>
+                                <td>602&nbsp;&nbsp;&nbsp;&nbsp; <span>不计免赔率险（三者责任险）</span></td>
+                                <td></td>
+                                <td>740000</td>
+                                <td>0.00000</td>
+                                <td>1526.23</td>
+                                <td>100.00</td>
+                                <td>63.7500</td>
+                                <td>973.04</td>
+                                <td>582.16</td>
+                            </tr>
+                            <tr>
+                                <td>604&nbsp;&nbsp;&nbsp;&nbsp; <span>不计免赔（车上人员（司机））</span></td>
+                                <td></td>
+                                <td>740000</td>
+                                <td>0.00000</td>
+                                <td>1526.23</td>
+                                <td>100.00</td>
+                                <td>63.7500</td>
+                                <td>973.04</td>
+                                <td>582.16</td>
+                            </tr>
+                            <tr>
+                                <td>606&nbsp;&nbsp;&nbsp;&nbsp; <span>不计免赔（车上人员（乘客））</span></td>
+                                <td></td>
+                                <td>740000</td>
+                                <td>0.00000</td>
+                                <td>1526.23</td>
+                                <td>100.00</td>
+                                <td>63.7500</td>
+                                <td>973.04</td>
+                                <td>582.16</td>
+                            </tr>
+                            <tr>
+                                <td>603&nbsp;&nbsp;&nbsp;&nbsp; <span>不计免赔（全车盗抢险）</span></td>
+                                <td></td>
+                                <td>740000</td>
+                                <td>0.00000</td>
+                                <td>1526.23</td>
+                                <td>100.00</td>
+                                <td>63.7500</td>
+                                <td>973.04</td>
+                                <td>582.16</td>
+                            </tr>
+
+
+                        </table>
+
+                    </tr>
+
+                    <!--===================================================================================-->
+					<tr>
+						<td colspan="4" align="center" style="text-align: center;border: none;">
+							<input type="submit" value="保存" style="cursor: hand; cursor: pointer; background: #FFE5D6; width: 100px; outline: none; border: #FF0000 1px solid;" /></td>
+					</tr>
+				</table>
+				
+			</form>
+		</main>
+	</body>
+</html>
+
+	</body>
+</html>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.liu.dao.GuProPosalRiskDao">
+    <insert id="addGuProsalRisk" parameterType="guProPosalRisk">
+        insert into  GUPROPOSALRISK
+        (proposalno, riskcode, riskcname, startdate, enddate, sumgrosspremium)
+        values (#{proPosalNo},#{riskCode},#{riskCname},#{startDate},#{endDate},#{sumGrossPremium})
+    </insert>
+
+    <select id="seGuProPosalRisk" parameterType="String" resultType="guProPosalRisk">
+        select proposalno, riskcode, riskcname, startdate, enddate, sumgrosspremium from GUPROPOSALRISK where PROPOSALNO=#{proPosalNo}
+    </select>
+
+</mapper>

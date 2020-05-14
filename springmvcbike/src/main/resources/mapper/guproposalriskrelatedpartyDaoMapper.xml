@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.liu.dao.GuProPosalRiskRelatedPartyDao">
+    <!--添加投保人信息-->
+    <insert id="addGuProPosalRiskRelatedParty" parameterType="guProPosalRiskRelatedParty">
+        insert into GUPROPOSALRISKRELATEDPARTY
+        (proposalno, insuredcode, insuredname, insuredaddress, identifynumber, sex)
+        values (#{proPosalNo},#{insuredCode},#{insuredName},#{insuredAddess},#{identifyNumber},#{sex})
+    </insert>
+    <!--    根据投保单号查询投保人-->
+    <select id="seGuProPosalRiskRelatedParty" parameterType="String" resultType="guProPosalRiskRelatedParty">
+        select proposalno, insuredcode, insuredname, insuredaddress, identifynumber, sex from GUPROPOSALRISKRELATEDPARTY where proPosalNo=#{proPosalNo}
+    </select>
+
+
+
+
+
+
+</mapper>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.liu.dao.GuProPosalItemmotorDao">
+<!--    根据保单号查询-->
+    <select id="seGuProPosalItemmotor" parameterType="String" resultType="guProPosalItemmotor">
+        select * from guproposalitemmotor where proposalno=#{proPosalNo}
+    </select>
+
+    <!--插入车的信息-->
+    <insert id="addGuProPosalItemmotor" parameterType="guProPosalItemmotor">
+        insert into guproposalitemmotor
+        (PROPOSALNO, VIN, ENGINE, LICENNO, ERRDATE)
+        values (#{proPosalNo},#{vin},#{engine},#{licenNo},#{errDate})
+    </insert>
+
+</mapper>
